@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/judelt/tinyapp/issues"
   },
-  "homepage": "https://github.com/judelt/tinyapp#readme"
+  "homepage": "https://github.com/judelt/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
