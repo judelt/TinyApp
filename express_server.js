@@ -53,15 +53,6 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
-});
- 
-app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
-});
-
 ////// POST
 app.post("/urls", (req, res) => {
   
@@ -70,6 +61,12 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = longURL;
   res.redirect(`/urls/${shortURL}`);
 });
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const shortURL = req.params.shortURL
+  delete urlDatabase[shortURL];
+  res.redirect("/urls");
+})
 
 ////// LISTEN
 app.listen(PORT, () => {
