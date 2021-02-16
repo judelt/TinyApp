@@ -5,9 +5,9 @@ const bodyParser = require("body-parser");
 const PORT = 8080; // default port 8080
 
 
-const generateRandomString = function () {
+const generateRandomString = function() {
   return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
-}
+};
 
 
 const urlDatabase = {
@@ -56,19 +56,19 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/set", (req, res) => {
   const a = 1;
   res.send(`a = ${a}`);
- });
+});
  
- app.get("/fetch", (req, res) => {
+app.get("/fetch", (req, res) => {
   res.send(`a = ${a}`);
- });
+});
 
 ////// POST
- app.post("/urls", (req, res) => {
+app.post("/urls", (req, res) => {
   
   let shortURL = generateRandomString();
   let longURL = req.body.longURL;
   urlDatabase[shortURL] = longURL;
-  res.redirect(`/urls/${shortURL}`)
+  res.redirect(`/urls/${shortURL}`);
 });
 
 ////// LISTEN
