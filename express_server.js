@@ -15,12 +15,13 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
-
+////// USE
 app.use(bodyParser.urlencoded({extended: true}));
 
+////// SET
 app.set("view engine", "ejs");
 
-
+////// GET
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -47,6 +48,11 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
+});
+
 app.get("/set", (req, res) => {
   const a = 1;
   res.send(`a = ${a}`);
@@ -56,11 +62,16 @@ app.get("/set", (req, res) => {
   res.send(`a = ${a}`);
  });
 
+////// POST
  app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  
+  let shortURL = generateRandomString();
+  let longURL = req.body.longURL;
+  urlDatabase[shortURL] = longURL;
+  res.redirect(`/urls/${shortURL}`)
 });
 
+////// LISTEN
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
