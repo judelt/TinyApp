@@ -11,14 +11,15 @@
       </div>
     </div>
     
-      <% if(username){ %>
-        <h1 lass="navbar-brand">Logged in as : <%= username %></h1>
+      <% if(email){ %>
+        <h3 lass="navbar-brand">Logged in as : <%= email %></h3>
         <form method="POST" action="/logout">
           <button>Logout</button>
         </form>
       <% } else{ %>  
         <form method="POST" action="/login">
-          <input name="username" type="text" placeholder="username">
+          <input name="email" type="email" placeholder="email@email.com">
+          <input name="password" type="password">
           <button>Login</button>
         </form>
      <% } %>
