@@ -32,14 +32,12 @@ const users = {
 }
 
 // Helper functions
-const checkEmailExists = function (email) {
-  for(const key in users){
-    if(key === id) {
-      user = users[key];
+const emailExist = function (email){
+  for(let key in users){
+    if(users[key].email===email){
       return true;
     }
   }
-  let user=null;
   return false;
 }
 
@@ -72,6 +70,46 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = longURL;
   res.redirect(`/urls/${shortURL}`);
 });
+// /login
+app.get("/login", (req, res) => {
+  let templateVars;
+  const id = req.cookies.id;
+  let user = null;
+  for(const key in users) {
+    if(key === id) {
+      user = users[key];
+    }
+  }
+  templateVars = {
+    user,
+    urls: urlDatabase,
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL]
+  }
+res.render("urls_login", templateVars);
+});
+
+app.post("/login", function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+
+//If email is already been used
+  if(!emailExist(email)) {
+    res.status(403);
+    res.send('Email not found');
+    
+  } else {
+    for(const key in users) {
+      if(users[key].password === password && users[key].email === email) {
+        res.status(403);
+        res.send('Password does not match');
+      } else {
+        res.cookie("id", users[key].id);
+        res.redirect("/urls");
+      }
+    }
+  }
+});
 
 // /register
 app.get("/register", (req, res) => {
@@ -92,16 +130,29 @@ app.get("/register", (req, res) => {
 
 app.post('/register', function (req, res) {
   
-  const id = generateRandomString()
-  const newUser = {
-    id: id,
-    email: req.body.email,
-    password: req.body.password
+  const email = req.body.email;
+  const password = req.body.password;
+  //If email or password are blank
+  if(email==="" || password === ""){
+    res.status(400);
+    res.send('Email or password are blank');
   }
-  users[id] = newUser;
-  console.log('register form:', req.body)
-  res.cookie("id", id)
-  res.redirect("/urls");
+
+  //If email is already been used
+  if(emailExist(email)) {
+    res.status(400);
+    res.send('Email already registered. Login instead');
+  } else {
+    const id = generateRandomString();
+    const newUser = {
+      id,
+      email,
+      password
+    }
+    users[id] = newUser;
+    res.cookie("id", id);
+    res.redirect("/urls");
+  }
 });
 
 // /urls/new
@@ -145,19 +196,6 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
-});
-
-// /login
-// const users = {
-//   "userRandomID": {
-//     id: "userRandomID",
-//     email: "user@example.com",
-//     password: "purple-monkey-dinosaur"
-//   }
-// }
-app.post('/login', function (req, res) {
-  res.cookie("email", req.body.email)
-  res.redirect("/urls");
 });
 
 // /logout
