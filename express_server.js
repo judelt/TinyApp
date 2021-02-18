@@ -19,9 +19,11 @@ const generateRandomString = function () {
 };
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
+
+console.log(urlDatabase);
 
 const users = {
   "userRandomID": {
@@ -82,7 +84,8 @@ app.get("/urls", (req, res) => {
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
   let longURL = req.body.longURL;
-  urlDatabase[shortURL] = longURL;
+  let userID = req.cookies.id;
+  urlDatabase[shortURL] = {longURL, userID};
   res.redirect(`/urls/${shortURL}`);
 });
 // /login
@@ -181,7 +184,6 @@ app.get("/urls/new", (req, res) => {
 
 // /urls/:shortURL
 app.get("/urls/:shortURL", (req, res) => {
-    let templateVars;
     const id = req.cookies.id;
     let user = null;
     for(const key in users) {
@@ -189,11 +191,11 @@ app.get("/urls/:shortURL", (req, res) => {
         user = users[key];
       }
     }
-    templateVars = {
+    let templateVars = {
       user,
       urls: urlDatabase,
       shortURL: req.params.shortURL,
-      longURL: urlDatabase[req.params.shortURL]
+      longURL: urlDatabase[req.params.shortURL].longURL
     }
   res.render("urls_show", templateVars);
 });
