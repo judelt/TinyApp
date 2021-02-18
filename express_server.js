@@ -41,6 +41,24 @@ const emailExist = function (email){
   return false;
 }
 
+const passwordExist = function (email, password){
+  for(let key in users){
+    if(users[key].email===email && users[key].password===password){
+      return true;
+    }
+  }
+  return false;
+}
+
+const setId = function (email, password){
+  for(let key in users){
+    if(users[key].email===email && users[key].password===password){
+      return users[key].id;
+    }
+  }
+  return false;
+}
+
 // Main page
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -52,6 +70,8 @@ app.get("/urls", (req, res) => {
   const id = req.cookies.id;
   let user=null;
   for(const key in users) {
+    console.log(users[key]);
+    
     if(key === id) {
       user = users[key];
     }
@@ -74,6 +94,7 @@ app.post("/urls", (req, res) => {
 app.get("/login", (req, res) => {
   let templateVars;
   const id = req.cookies.id;
+  //console.log(id)
   let user = null;
   for(const key in users) {
     if(key === id) {
@@ -100,11 +121,12 @@ app.post("/login", function (req, res) {
     
   } else {
     for(const key in users) {
-      if(users[key].password === password && users[key].email === email) {
+      if (!passwordExist(email, password)) {
         res.status(403);
         res.send('Password does not match');
       } else {
-        res.cookie("id", users[key].id);
+        let id = setId(email, password);
+        res.cookie("id", id)
         res.redirect("/urls");
       }
     }
