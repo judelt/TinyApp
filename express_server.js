@@ -34,11 +34,9 @@ const users = {
 // Helper functions
 const emailExist = function (email){
   for(let key in users){
-    if(users[key].email===email){
-      return true;
-    }
-  }
+    if(users[key].email===email) return true;
   return false;
+  }
 }
 
 const passwordExist = function (email, password){
@@ -48,7 +46,7 @@ const passwordExist = function (email, password){
     }
   }
   return false;
-}
+};
 
 const setId = function (email, password){
   for(let key in users){
@@ -70,8 +68,6 @@ app.get("/urls", (req, res) => {
   const id = req.cookies.id;
   let user=null;
   for(const key in users) {
-    console.log(users[key]);
-    
     if(key === id) {
       user = users[key];
     }
@@ -80,7 +76,6 @@ app.get("/urls", (req, res) => {
     user,
     urls: urlDatabase
   }
-  
   res.render("urls_index", templateVars);
 });
 
@@ -94,15 +89,13 @@ app.post("/urls", (req, res) => {
 app.get("/login", (req, res) => {
   let templateVars;
   const id = req.cookies.id;
-  //console.log(id)
   let user = null;
   for(const key in users) {
     if(key === id) {
       user = users[key];
     }
   }
-  templateVars = {
-    user,
+  templateVars = { user,
     urls: urlDatabase,
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
@@ -117,8 +110,7 @@ app.post("/login", function (req, res) {
 //If email is already been used
   if(!emailExist(email)) {
     res.status(403);
-    res.send('Email not found');
-    
+    res.send('Email not found'); 
   } else {
     for(const key in users) {
       if (!passwordExist(email, password)) {
@@ -166,11 +158,7 @@ app.post('/register', function (req, res) {
     res.send('Email already registered. Login instead');
   } else {
     const id = generateRandomString();
-    const newUser = {
-      id,
-      email,
-      password
-    }
+    const newUser = { id, email, password }
     users[id] = newUser;
     res.cookie("id", id);
     res.redirect("/urls");
@@ -179,7 +167,6 @@ app.post('/register', function (req, res) {
 
 // /urls/new
 app.get("/urls/new", (req, res) => {
-  let templateVars;
   const id = req.cookies.id;
   let user= null;
   for(const key in users) {
@@ -187,11 +174,9 @@ app.get("/urls/new", (req, res) => {
       user = users[key];
     }
   }
-  templateVars = {
-    user,
-    urls: urlDatabase
-  }
-  res.render("urls_new", templateVars);
+  let templateVars = { user, urls: urlDatabase}
+  if(req.cookies.id) res.render("urls_new", templateVars);
+  res.render("urls_login", templateVars);
 });
 
 // /urls/:shortURL
