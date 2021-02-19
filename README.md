@@ -1,6 +1,30 @@
-# Display Requirements
+# TinyApp
 
-## Site Header:
+#### A full stack web app built with Node and Express that allows users to shorten long URLs (à la bit.ly).
+#### Assignment for [Lighthouse Labs] (https://www.lighthouselabs.ca/)
+
+## Final Product
+
+!["Register page"](https://github.com/judelt/tinyapp/blob/main/docs/register-page.png?raw=true)
+!["My URLs page"](https://github.com/judelt/tinyapp/blob/main/docs/urls-page.png?raw=true)
+
+## Dependencies
+
+- Node.js
+- Express
+- EJS
+- bcrypt
+- body-parser
+- cookie-session
+
+## Getting Started
+
+- Install all dependencies (using the `npm install` command).
+- Run the development web server using the `node express_server.js` command.
+
+## Display Requirements
+
+### Site Header:
   - if a user is logged in, the header shows:
     - [x] the user's email
     - [x] a logout button which makes a POST request to /logout
@@ -9,15 +33,15 @@
     - [x] a link to the login page (/login)
     - [x] a link to the registration page (/register)
 
-# Behaviour Requirements
+## Behaviour Requirements
 
-## GET /
+### GET /
   - if user is logged in:
     - [x] (Minor) redirect to /urls
   - if user is not logged in:
     - [x] (Minor) redirect to /login
 
-## GET /urls
+### GET /urls
 
   - if user is logged in:
     - returns HTML with:
@@ -34,7 +58,7 @@
   - if user is not logged in:
     - [x] returns HTML with a relevant error message
 
-## GET /urls/new
+### GET /urls/new
 
   - if user is logged in:
     - returns HTML with:
@@ -45,7 +69,7 @@
   - if user is not logged in:
     - [x] redirects to the /login page
 
-## GET /urls/:id
+### GET /urls/:id
 
   - if user is logged in and owns the URL for the given ID:
     - returns HTML with:
@@ -64,7 +88,7 @@
   - if user is logged it but does not own the URL with the given ID:
     - [x] returns HTML with a relevant error message
 
-## GET /u/:id
+### GET /u/:id
 
   - if URL for the given ID exists:
     - [x] redirects to the corresponding long URL
@@ -72,7 +96,7 @@
     - [x] (Minor) returns HTML with a relevant error message
 
 
-## POST /urls
+### POST /urls
 
   - if user is logged in:
     - [x] generates a short URL, saves it, and associates it with the user
@@ -80,7 +104,7 @@
   - if user is not logged in:
     - [x] (Minor) returns HTML with a relevant error message
 
-## POST /urls/:id
+### POST /urls/:id
 
   - if user is logged in and owns the URL for the given ID:
     - [x] updates the URL
@@ -90,7 +114,7 @@
   - if user is logged it but does not own the URL for the given ID:
     - [x] (Minor) returns HTML with a relevant error message
 
-## POST /urls/:id/delete
+### POST /urls/:id/delete
 
   - if user is logged in and owns the URL for the given ID:
     - [x] deletes the URL
@@ -100,7 +124,7 @@
   - if user is logged it but does not own the URL for the given ID:
     - [x] (Minor) returns HTML with a relevant error message
 
-## GET /login
+### GET /login
 
   - if user is logged in:
     - [x] (Minor) redirects to /urls
@@ -110,7 +134,7 @@
     - [x] input fields for email and password
     - [x] submit button that makes a POST request to /login
 
-## GET /register
+### GET /register
 
   - if user is logged in:
     - [x] (Minor) redirects to /urls
@@ -120,7 +144,7 @@
     - [x] input fields for email and password
     - [x] a register button that makes a POST request to /register
 
-## POST /login
+### POST /login
 
   - if email and password params match an existing user:
     - [x] sets a cookie
@@ -128,7 +152,7 @@
   - if email and password params don't match an existing user:
     - [x] returns HTML with a relevant error message
 
-## POST /register
+### POST /register
 
   - if email or password are empty:
     - [x] returns HTML with a relevant error message
@@ -140,7 +164,7 @@
     - [x] sets a cookie
     - [x] redirects to /urls
 
-## POST /logout
+### POST /logout
 
   - [x] deletes cookie
   - [x] redirects to /urls
