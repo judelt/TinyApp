@@ -76,7 +76,7 @@
 
   - if user is logged in:
     - [x] generates a short URL, saves it, and associates it with the user
-    - [x]redirects to /urls/:id, where :id matches the ID of the newly saved URL
+    - [x] redirects to /urls/:id, where :id matches the ID of the newly saved URL
   - if user is not logged in:
     - [x] (Minor) returns HTML with a relevant error message
 
@@ -137,7 +137,7 @@
   - otherwise:
     - [x] creates a new user
     - [x] encrypts the new user's password with bcrypt
-    - [x]sets a cookie
+    - [x] sets a cookie
     - [x] redirects to /urls
 
 ## POST /logout
