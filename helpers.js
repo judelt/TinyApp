@@ -1,12 +1,13 @@
 // Helper functions
 const getUserByEmail = (database, email) => {
-  let user = null;
+  let user = {};
   for (let key in database) {
-    if (database[key].email === email) {
+    if (database[key]['email'] === email) {
       user = database[key];
+      return user;
     }
   }
-  return user;
+  return null;
 };
 
 const generateRandomString = function() {
