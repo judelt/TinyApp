@@ -62,7 +62,7 @@
   - if user is not logged in:
     - [x] returns HTML with a relevant error message
   - if user is logged it but does not own the URL with the given ID:
-    - !!![ ] returns HTML with a relevant error message
+    - [x] returns HTML with a relevant error message
 
 ## GET /u/:id
 
@@ -88,7 +88,7 @@
   - if user is not logged in:
     - [x] (Minor) returns HTML with a relevant error message
   - if user is logged it but does not own the URL for the given ID:
-    - !!![ ] (Minor) returns HTML with a relevant error message
+    - [x] (Minor) returns HTML with a relevant error message
 
 ## POST /urls/:id/delete
 
@@ -144,3 +144,7 @@
 
     - [x] deletes cookie
     - [x] redirects to /urls
+
+
+
+   
