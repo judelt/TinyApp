@@ -20,9 +20,6 @@ app.use(cookieSession({
 ////// SET
 app.set("view engine", "ejs");
 
-const generateRandomString = function() {
-  return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
-};
 
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
@@ -39,6 +36,12 @@ const users = {
 };
 
 // Helper functions
+
+const { getUserByEmail, generateRandomString } = = require('./helpers');
+const generateRandomString = function() {
+  return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+};
+
 const getUserByEmail = (database, email) => {
   let user = null;
   for (let key in database) {
