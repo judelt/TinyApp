@@ -207,7 +207,7 @@ app.get("/urls/new", (req, res) => {
   const user = users[id];
   if (!user) {
     res.redirect(`/login`);
-    return; 
+    return;
   }
 
   let templateVars = { user };
@@ -239,7 +239,7 @@ app.get("/urls/:shortURL", (req, res) => {
     res.status(403);
     res.send('Not allowed');
     return;
-  } 
+  }
   
   if (urlRecord.userID !== req.session.user_id) {
     res.send('URL unavailable');
