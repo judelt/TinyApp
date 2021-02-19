@@ -30,7 +30,7 @@
       - [ ] (Stretch) the date the short URL was created
       - [ ] (Stretch) the number of times the short URL was visited
       - [ ] (Stretch) the number number of unique visits for the short URL
-      - !!!!![ ] (Minor) a link to "Create a New Short Link" which makes a GET request to /urls/new
+      - [x] (Minor) a link to "Create a New Short Link" which makes a GET request to /urls/new
   - if user is not logged in:
     - [x] returns HTML with a relevant error message
 
@@ -41,7 +41,7 @@
     - [x] the site header (see Display Requirements above)
     - a form which contains:
       - [x] a text input field for the original (long) URL
-      - [x]a submit button which makes a POST request to /urls
+      - [x] a submit button which makes a POST request to /urls
   - if user is not logged in:
     - [x] redirects to the /login page
 
@@ -67,9 +67,9 @@
 ## GET /u/:id
 
   - if URL for the given ID exists:
-    - [x]redirects to the corresponding long URL
+    - [x] redirects to the corresponding long URL
   - if URL for the given ID does not exist:
-    - [x](Minor) returns HTML with a relevant error message
+    - [x] (Minor) returns HTML with a relevant error message
 
 
 ## POST /urls
@@ -103,7 +103,7 @@
 ## GET /login
 
   - if user is logged in:
-    - [x](Minor) redirects to /urls
+    - [x] (Minor) redirects to /urls
   - if user is not logged in:
     - returns HTML with:
     - a form which contains:
@@ -136,14 +136,14 @@
     - [x] returns HTML with a relevant error message
   - otherwise:
     - [x] creates a new user
-    - !!![ ] encrypts the new user's password with bcrypt
+    - [x] encrypts the new user's password with bcrypt
     - [x]sets a cookie
     - [x] redirects to /urls
 
 ## POST /logout
 
-    - [x] deletes cookie
-    - [x] redirects to /urls
+  - [x] deletes cookie
+  - [x] redirects to /urls
 
 
 
