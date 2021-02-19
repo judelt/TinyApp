@@ -73,20 +73,30 @@ const setId = function (email, password){
 
 // Main page
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  const userID = req.cookies.id;
+  if(!userID) {
+    res.redirect("/login")
+  }
+
+  res.redirect("/urls");
 });
 
 // /login
 app.get("/login", (req, res) => {
   let templateVars;
   const id = req.cookies.id;
+  if(id) {
+    res.redirect("/urls");
+    return;
+  }
   let user = null;
   for(const key in users) {
     if(key === id) {
       user = users[key];
     }
   }
-  templateVars = { user,
+  templateVars = { 
+    user,
     urls: urlDatabase,
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
@@ -122,6 +132,10 @@ app.post("/login", function (req, res) {
 app.get("/register", (req, res) => {
   let templateVars;
   const id = req.cookies.id;
+  if(id) {
+    res.redirect("/urls");
+    return;
+  }
   let user=null;
   for(const key in users) {
     if(key === id) {
@@ -170,11 +184,11 @@ app.get("/urls", (req, res) => {
     return;
   }
 
-  const user = users[userID];
-  if(!user) {
-    res.status(403);
-    res.send('You have to register/login first');
-    return;
+  let user=null;
+  for(const key in users) {
+    if(key === userID) {
+      user = users[key];
+    }
   }
 
   templateVars = {
@@ -193,17 +207,6 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
-// /u/*I AM HERE!!!!
-// app.get("*", (req, res) => {
-//   const id = req.cookies.id;
-//   if(urlsForUser(id).userID === id) {
-//     const longURL = urlDatabase[id].longURL;
-//     res.redirect(longURL);
-//   }
-//   res.send('Did you created this short URL? You have to register/login first to access it'); 
-// });
-
-// /urls/new
 app.get("/urls/new", (req, res) => {
   const id = req.cookies.id;
   let user= null;
@@ -219,11 +222,22 @@ app.get("/urls/new", (req, res) => {
 
 // /urls/:shortURL
 app.get("/urls/:shortURL", (req, res) => {
-  let user = null;
   const id = req.cookies.id;
+  if(!urlsForUser(id).userID === id) {
+    const longURL = urlDatabase[id].longURL;
+    res.send('Did you created this short URL? You have to register/login first to access it');
+  }
+   
+
+  let user = null;
+  for(const key in users) {
+    if(key === id) {
+      user = users[key];
+    }
+  }
+
   if(!id) {
-    res.status(403);
-    res.redirect("/login");
+    res.send('User not logged in');
     return;
   }
 
@@ -246,16 +260,20 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-
 // /u/:shortURL
 app.get("/u/:shortURL", (req, res) => {
-  const id = req.cookies.id;
-  if(urlsForUser(id).userID === id) {
-    const longURL = urlDatabase[id].longURL;
-    res.redirect(longURL);
+  const shortURL = req.params.shortURL;
+  const urlRecord = urlDatabase[shortURL];
+  const longURL = urlRecord.longURL;
+  if(!urlRecord) {
+    res.status(403);
+    res.send('Short URL not found'); 
+    return;
   }
-  res.send('Did you created this short URL? You have to register/login first to access it'); 
+  res.redirect(longURL);
 });
+
+
 
 // /urls/:id
 app.post("/urls/:id", (req, res) => {
@@ -281,13 +299,6 @@ app.post("/urls/:shortURL/delete", (req, res) => {
     res.send('No user');
     return;
   }
-// I will use it in the login
-  // const user = users[id];
-  // if(!user) {
-  //   res.status(403);
-  //   res.send('Invalid user');
-  //   return;
-  // }
 
   const shortURL = req.params.shortURL;
   const urlRecord = urlDatabase[shortURL];
