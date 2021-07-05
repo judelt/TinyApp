@@ -79,12 +79,7 @@ app.get("/login", (req, res) => {
       user = users[key];
     }
   }
-  templateVars = {
-    user,
-    urls: urlDatabase,
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL]
-  };
+  templateVars = { user };
   res.render("urls_login", templateVars);
 });
 
@@ -134,10 +129,7 @@ app.get("/register", (req, res) => {
       user = users[key];
     }
   }
-  templateVars = {
-    user,
-    urls: urlDatabase
-  };
+  templateVars = { user };
   res.render("urls_register", templateVars);
 });
 
@@ -249,7 +241,6 @@ app.get("/urls/:shortURL", (req, res) => {
   const longURL = urlRecord.longURL;
   let templateVars = {
     user,
-    urls: urlsForUser(id),
     shortURL,
     longURL
   };
